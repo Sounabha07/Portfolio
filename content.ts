@@ -1,7 +1,7 @@
 // All site content lives here. Edit this file to update both the console and the plain sections.
 // Text in [brackets] is a TODO that shows on the site until you replace it.
 
-export type SpriteKey = "person" | "rack" | "graph" | "glass" | "swords" | "trophy" | "mail" | "bars" | "flow";
+export type SpriteKey = "person" | "rack" | "graph" | "glass" | "swords" | "trophy" | "mail" | "bars" | "flow" | "chip";
 export type SceneKey = "store" | "pipeline" | "graph";
 
 export const profile = {
@@ -32,13 +32,8 @@ export const aboutDialog = [
 
 export const about = {
   intro:
-    "I'm Sounabha Majumdar, a third-year computer engineering student at K.J. Somaiya School of Engineering, Vidyavihar, Mumbai, class of 2028.",
-  points: [
-    "Backend and systems developer",
-    "I build AI-powered applications",
-    "AI/ML enthusiast",
-    "Competitive programmer",
-  ],
+    "Third-year computer engineering student at K.J. Somaiya School of Engineering, Mumbai. Backend and distributed systems are my thing.",
+  points: ["Backend and systems developer", "AI-powered app builder", "AI/ML enthusiast", "Competitive programmer"],
 };
 
 export const now = [
@@ -121,10 +116,23 @@ export const upNext = {
   description: "A vLLM-style server with paged KV cache and continuous batching, built by hand.",
 };
 
-export type Achievement = { title: string; detail: string; consoleTitle: string; consoleSub: string; link?: string };
+export type Achievement = {
+  title: string;
+  detail: string;
+  consoleTitle: string;
+  consoleSub: string;
+  link?: string; // profile URL
+  handle?: string; // shown on its own line under the detail, linking to `link`
+};
 
 export const achievements: Achievement[] = [
-  { title: "ICPC Regionalist '26", detail: "Team O(1)hope.", consoleTitle: "ICPC Regionalist '26", consoleSub: "Team O(1)hope" },
+  {
+    title: "ICPC Regionalist '26",
+    detail:
+      "Qualified for the 2026 ICPC Asia onsite regionals with my team, O(1)hope, as the top-ranked team from my college in the India preliminary round.",
+    consoleTitle: "ICPC Regionalist '26",
+    consoleSub: "Team O(1)hope",
+  },
   {
     title: "Paytm Build for India AI Hackathon, Mumbai, October 2026",
     detail:
@@ -138,22 +146,39 @@ export const achievements: Achievement[] = [
     consoleTitle: "AlgoUniversity Tech Fellowship",
     consoleSub: "Top 500 of 1,00,000+",
   },
-  { title: "Codeforces Specialist", detail: "", consoleTitle: "Codeforces", consoleSub: "Specialist", link: profile.codeforces },
-  { title: "CodeChef 3 star", detail: "", consoleTitle: "CodeChef", consoleSub: "3 star", link: profile.codechef },
+  {
+    title: "Codeforces Specialist",
+    detail: "Contests here taught me to think fast and write correct code under pressure.",
+    consoleTitle: "Codeforces",
+    consoleSub: "Specialist",
+    link: profile.codeforces,
+    handle: "Sounabha07",
+  },
+  {
+    title: "CodeChef 3 star",
+    detail: "Where I first got hooked on algorithm puzzles and kept coming back.",
+    consoleTitle: "CodeChef",
+    consoleSub: "3 star",
+    link: profile.codechef,
+    handle: "extra_sail_77",
+  },
 ];
 
 export const skills: { group: string; items: string[] }[] = [
-  { group: "Languages", items: ["C++", "Python", "Go", "TypeScript"] },
+  { group: "Languages", items: ["C++", "Java", "Python", "Go", "JavaScript", "TypeScript", "SQL"] },
   {
-    group: "Backend and systems",
-    items: ["FastAPI", "Celery", "Redis", "PostgreSQL", "Docker", "distributed task queues", "replication"],
+    group: "Backend",
+    items: ["Go", "Python", "FastAPI", "Node.js", "Express.js", "Celery", "REST APIs", "WebSockets", "JWT auth"],
   },
-  { group: "AI", items: ["LLM APIs", "LangGraph", "agents"] },
-  { group: "Frontend", items: ["React", "React Flow", "Tailwind CSS"] },
-  { group: "Practice", items: ["Git", "GitHub Actions CI", "pytest"] },
+  { group: "Databases", items: ["PostgreSQL", "MySQL", "MongoDB", "Redis"] },
+  { group: "Infra and tooling", items: ["Docker", "Docker Compose", "GitHub Actions CI", "pytest", "Git"] },
+  {
+    group: "AI and ML",
+    items: ["LLM APIs", "LangGraph", "agents", "RAG", "vector databases", "PyTorch", "Hugging Face"],
+  },
 ];
 
 export const contact = {
   heading: "Get in touch",
-  line: "Questions about anything here, or want to talk systems? Write to me.",
+  line: "Have a question, an idea, or just want to say hi? My inbox is open.",
 };

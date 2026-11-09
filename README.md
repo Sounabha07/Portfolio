@@ -30,12 +30,12 @@ Open `/?view=skim` or `/?view=play` to jump straight to a face.
 |---|---|---|
 | `profile` | Everywhere | Name, role, one-liner (also the meta description), links. |
 | `aboutDialog` | Console → About | One string per dialog page. Keep each under ~100 characters (4 rows of ~25) so it fits the box. |
-| `about` | Skim → About | Intro sentence + bullet points. |
-| `now` | Skim → Now | Short list. |
+| `about` | Skim → top dialog box | Intro paragraph + four bullet points. |
+| `now` | Not shown right now | Kept for when a Now section comes back. |
 | `projects` | Console → Projects, Skim → Projects | See below. |
 | `upNext` | Skim → Projects | The dashed "Planned" card. |
-| `achievements` | Console → Achievements, Skim → Achievements | `title`/`detail` for Skim, `consoleTitle`/`consoleSub` for the console, optional `link`. |
-| `skills` | Skim → Skills | Groups of plain tags, no levels. |
+| `achievements` | Console → Achievements, Skim → Achievements | `consoleTitle`/`consoleSub` on both, `detail` line on Skim badges, optional `link` + `handle` (shown as a profile link). |
+| `skills` | Skim → Inventory | Groups of plain tags, no levels. |
 | `contact` | Skim → Contact | Heading and one line. |
 
 ### Projects
@@ -73,14 +73,14 @@ app/
   opengraph-image.tsx       share card (next/og), twitter-image.tsx reuses it
   icon.svg, apple-icon.tsx  pixel-person favicon
 components/console/
-  Console.tsx               shell, buttons, keyboard/touch input, mute
+  Console.tsx               shell, buttons, keyboard/touch input
   machine.ts                useReducer state machine (screens, cursors, effects)
   Screen.tsx, screens/*     one component per screen
   sprites.ts, Sprite.tsx    12x12 pixel sprites as crisp SVG
   sound.ts                  Web Audio square-wave beeps
   useStage.ts               hero background canvas + button bursts
   console.css               console look (ported from console-reference.html)
-components/site/            Skim sections
+components/skim/            Skim face (cartridge-shelf layout, reveals, background canvas)
 components/view/            Play | Skim switch and faces
 assets/fonts/               static font files used only by the OG image
 console-reference.html      the original single-file prototype the console was ported from

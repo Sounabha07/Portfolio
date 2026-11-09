@@ -17,8 +17,6 @@ const KEYMAP: Record<string, Key> = {
   shift: "select",
 };
 
-const MUTE_KEY = "gb-muted";
-
 function openLink(u: string) {
   try {
     if (u.startsWith("mailto:")) window.location.href = u;
@@ -37,7 +35,6 @@ type Props = {
 export function Console({ resume, onPress }: Props) {
   const [state, dispatch] = useReducer(reducer, resume, initState);
   const [active, setActive] = useState(false);
-  const [muted, setMuted] = useState(false);
   const skim = useView().view === "skim";
   const skimRef = useRef(false);
   const fitRef = useRef<HTMLDivElement>(null);
@@ -128,32 +125,12 @@ export function Console({ resume, onPress }: Props) {
     return () => ro.disconnect();
   }, []);
 
-  // ---- Mute, remembered in localStorage ----
-  useEffect(() => {
-    let m = false;
-    try {
-      m = localStorage.getItem(MUTE_KEY) === "1";
-    } catch {
-      /* storage blocked */
-    }
-    if (m) setMuted(true);
-  }, []);
-
-  // Skim face: no keyboard capture and no sound (the saved mute choice is left alone).
+  // Sound is always on in Play. Skim face: no keyboard capture and no sound.
   useEffect(() => {
     skimRef.current = skim;
     if (skim) release();
-    setSoundMuted(muted || skim);
-  }, [skim, muted, release]);
-  const toggleMute = () => {
-    const m = !muted;
-    setMuted(m);
-    try {
-      localStorage.setItem(MUTE_KEY, m ? "1" : "0");
-    } catch {
-      /* storage blocked */
-    }
-  };
+    setSoundMuted(skim);
+  }, [skim, release]);
 
   // Reduced motion + boot timer.
   useEffect(() => {
@@ -289,28 +266,6 @@ export function Console({ resume, onPress }: Props) {
       </div>
 
       <div className="gb-bar" ref={barRef}>
-        <button type="button" className="mute" onClick={toggleMute}>
-          <svg viewBox="0 0 12 12" width="12" height="12" shapeRendering="crispEdges" aria-hidden="true" focusable="false">
-            <rect x="1" y="4" width="3" height="4" fill="currentColor" />
-            <rect x="4" y="3" width="1" height="6" fill="currentColor" />
-            <rect x="5" y="2" width="1" height="8" fill="currentColor" />
-            {muted ? (
-              <>
-                <rect x="8" y="4" width="1" height="1" fill="currentColor" />
-                <rect x="9" y="5" width="1" height="2" fill="currentColor" />
-                <rect x="10" y="4" width="1" height="1" fill="currentColor" />
-                <rect x="8" y="7" width="1" height="1" fill="currentColor" />
-                <rect x="10" y="7" width="1" height="1" fill="currentColor" />
-              </>
-            ) : (
-              <>
-                <rect x="8" y="4" width="1" height="4" fill="currentColor" />
-                <rect x="10" y="2" width="1" height="8" fill="currentColor" />
-              </>
-            )}
-          </svg>
-          {muted ? "Sound off" : "Sound on"}
-        </button>
         <span className="playing" role="status" style={{ visibility: active ? "visible" : "hidden" }}>
           Playing, Esc to exit
         </span>

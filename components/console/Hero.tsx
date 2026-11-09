@@ -40,8 +40,8 @@ export function Hero({ resume }: { resume: boolean }) {
     <section className="stage" ref={stageRef} aria-label="Playable portfolio console">
       <canvas className="stage-bg" ref={bgRef} aria-hidden="true" />
       <div className="stage-wrap">
-        <Console resume={resume} onPress={onPress} />
         <p className="hero-line">Press start to play, or hit Skim for the quick version.</p>
+        <Console resume={resume} onPress={onPress} />
         <div className="keys">
           {LEGEND.map((l) => (
             <div key={l.g} className={lit === l.g ? "kg on" : "kg"}>

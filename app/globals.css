@@ -58,6 +58,8 @@ body {
    After mount, the inactive face also gets the `hidden` attribute. Without JS, both show. */
 html[data-view="skim"] [data-face="play"],
 html[data-view="play"] [data-face="skim"] { display: none; }
+/* Skim draws its own rolling dot grid on a canvas, so drop the static one there. */
+html[data-view="skim"] body { background-image: none; }
 
 /* The switch is the page's only chrome: fixed to the top-right corner, under the wipe. */
 .view-dock { position: fixed; top: 12px; right: 16px; z-index: 50; }

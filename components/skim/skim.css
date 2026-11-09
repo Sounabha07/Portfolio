@@ -1,0 +1,148 @@
+/* Skim face: "cartridge shelf", ported from skim-reference.html. Everything is scoped under .skim. */
+
+.skim {
+  --body: #33353c; --edge: #24262b; --hi: #464953; --bez: #17181c; --bezt: #8d919c; --dp: #121316;
+  --coral: #e8644a; --tx: #ece6dc; --mu: #8d919c; --line: #2a2c33; --card: #22242a;
+  --ink0: #efe9df; --ink1: #2a2622; --ink2: #d9573e;
+  --px: var(--font-press-start), monospace;
+  --sans: var(--font-instrument), system-ui, sans-serif;
+  --disp: var(--font-syne), var(--font-instrument), sans-serif; /* Syne 800, slanted via font-style: italic */
+  --name: var(--font-name), Arial, sans-serif; /* your name stays in Arimo bold italic, like the Play console */
+  position: relative;
+  color: var(--tx);
+  font: 16px/1.6 var(--sans);
+}
+.skim .spw { display: block; flex: none; }
+
+/* Fixed background + burst canvases (drawn by SkimStage) */
+.skim .sk-bg, .skim .sk-fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.skim .sk-bg { z-index: 0; }
+.skim .sk-fx { z-index: 60; }
+.skim main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 24px 24px 80px; }
+.skim section { margin-top: 72px; }
+
+/* Section headings: pixel cursor, title, dashed rule, page counter */
+.skim h2 { display: flex; align-items: center; gap: 14px; font: 14px/1.6 var(--px); color: var(--tx); margin-bottom: 24px; text-transform: uppercase; }
+.skim h2 .cur { color: var(--coral); }
+.skim h2 .ln { flex: 1; height: 4px; background: repeating-linear-gradient(90deg, var(--hi) 0 8px, transparent 8px 12px); }
+.skim h2 .pg { color: var(--mu); font-size: 10px; }
+
+/* Hero: mini console + dialog box */
+.skim .hero { display: grid; grid-template-columns: 260px 1fr; gap: 28px; align-items: stretch; margin-top: 24px; }
+.skim .mini { background: var(--body); border-radius: 14px 14px 40px 14px; padding: 18px; box-shadow: inset 0 2px 0 var(--hi), inset 0 -3px 0 var(--edge), 0 18px 40px #0007; }
+.skim .mini .mbz { background: var(--bez); border-radius: 8px 8px 26px 8px; padding: 16px; }
+.skim .mini .mscn { background: var(--ink0); border-radius: 2px; aspect-ratio: 1; display: grid; place-items: center; position: relative; }
+.skim .mini .tag { position: absolute; left: 8px; top: 8px; font: 7px var(--px); color: var(--ink1); }
+.skim .mini .br { font: italic 700 13px var(--name); color: #a9adb8; margin-top: 12px; padding-left: 2px; white-space: nowrap; }
+.skim .mini .br span { font: 6px var(--px); margin-left: 6px; font-style: normal; }
+
+.skim .dlg { background: var(--ink0); color: var(--ink1); border: 4px solid var(--ink1); box-shadow: inset 0 0 0 3px var(--ink0), inset 0 0 0 6px var(--ink1); padding: 26px 28px; position: relative; border-radius: 4px; }
+.skim .dlg .ar { position: absolute; right: 16px; bottom: 12px; color: var(--ink2); font: 10px var(--px); }
+.skim .hero h1 { font: italic 700 40px/1.05 var(--name); letter-spacing: -.02em; margin-bottom: 10px; }
+.skim .dlg p { font-size: 17px; max-width: 56ch; }
+.skim .hero .dlg ul { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+.skim .hero .dlg li { font-weight: 600; display: flex; gap: 10px; align-items: center; }
+.skim .hero .dlg li::before { content: ''; width: 8px; height: 8px; background: var(--ink2); flex: none; }
+
+.skim .pill { font: 8px var(--px); padding: 6px 8px; border-radius: 3px; background: var(--hi); color: var(--tx); flex: none; text-transform: uppercase; }
+
+/* Projects: cartridges */
+.skim .cart { display: grid; grid-template-columns: 330px 1fr; background: var(--body); border-radius: 10px 10px 18px 18px; clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%); box-shadow: inset 0 2px 0 var(--hi), inset 0 -4px 0 var(--edge); margin-bottom: 22px; position: relative; transition: transform .18s steps(3); }
+.skim .cart::before { content: ''; position: absolute; left: 24px; right: 60px; top: 10px; height: 12px; background: repeating-linear-gradient(90deg, var(--edge) 0 3px, transparent 3px 9px); opacity: .8; }
+.skim .cart:hover { transform: translateY(-8px); }
+.skim .cart:hover .lab { box-shadow: 0 0 0 3px var(--coral); }
+.skim .cart:hover::before { background: repeating-linear-gradient(90deg, var(--coral) 0 3px, transparent 3px 9px); }
+/* The cream label stretches to the cartridge's full height (grid default), matching the details column. */
+.skim .lab { align-self: stretch; margin: 34px 0 22px 22px; background: var(--ink0); color: var(--ink1); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+.skim .lab .st { background: var(--ink1); color: var(--ink0); font: 8px var(--px); padding: 8px 12px; display: flex; justify-content: space-between; }
+.skim .lab .st b { color: var(--coral); font-weight: 400; } /* coral (not #d9573e) keeps the tiny text above AA on ink */
+.skim .lab .lbd { padding: 18px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; flex: 1; }
+.skim .lab h3 { font: italic 800 22px/1.1 var(--disp); margin-bottom: 8px; }
+.skim .lab p { font-size: 14px; line-height: 1.5; }
+.skim .det { padding: 34px 30px 24px 28px; color: var(--tx); }
+.skim .det .hk { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+.skim .det ul.pts li { position: relative; padding-left: 20px; color: #c9c5bd; font-size: 14.5px; margin-bottom: 7px; }
+.skim .det ul.pts li::before { content: '▸'; position: absolute; left: 0; color: var(--coral); }
+.skim .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.skim .chips li { font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 3px; background: var(--edge); color: var(--tx); border: 1px solid #3a3d45; }
+.skim .go { display: inline-flex; margin-top: 16px; font: 8px var(--px); background: var(--coral); color: #1b1c21; padding: 10px 12px; border-radius: 3px; text-decoration: none; box-shadow: 0 3px 0 #9c3f2c; transition: transform .08s steps(1); }
+.skim .go:active { transform: translateY(3px); box-shadow: none; }
+.skim .go.off { background: var(--hi); color: #d2cfc8; box-shadow: 0 3px 0 var(--edge); } /* lighter text than the reference for AA contrast */
+.skim .slot { border: 2px dashed var(--hi); border-radius: 10px; padding: 22px 26px; display: flex; gap: 18px; align-items: center; color: var(--mu); }
+.skim .slot b { color: var(--tx); }
+
+/* Achievements: badges */
+.skim .ach { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.skim .bdg { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: flex; gap: 14px; box-shadow: 4px 4px 0 var(--dp); position: relative; overflow: hidden; transition: transform .15s steps(2); }
+.skim .bdg.w { grid-column: span 2; }
+.skim .bdg:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--dp); }
+.skim .bdg::after { content: ''; position: absolute; top: -10px; bottom: -10px; width: 50px; left: -80px; background: linear-gradient(90deg, transparent, #ffffff18, transparent); transform: skewX(-20deg); pointer-events: none; }
+.skim .bdg.in::after, .skim .bdg:hover::after { animation: sk-shine .8s steps(10) .3s; }
+.skim .bdg .bt { font-size: 16px; line-height: 1.3; font-weight: 700; }
+.skim .bdg .bt a { text-decoration: underline; text-decoration-color: var(--hi); text-underline-offset: 3px; }
+.skim .bdg .bt a:hover { color: var(--coral); text-decoration-color: var(--coral); }
+.skim .bdg .sb { font: 8px/1.8 var(--px); color: var(--coral); margin: 6px 0; text-transform: uppercase; }
+.skim .bdg p.dt { font-size: 13.5px; color: #b9b5ad; }
+.skim .bdg .hd { margin-top: 8px; font-size: 13.5px; font-weight: 600; }
+.skim .bdg .hd a { color: var(--tx); text-decoration: underline; text-decoration-color: var(--hi); text-underline-offset: 3px; }
+.skim .bdg .hd a:hover { color: var(--coral); text-decoration-color: var(--coral); }
+
+/* Skills: inventory slots */
+.skim .inv { display: grid; gap: 14px; }
+/* Rows can wrap onto several lines; the label stays level with the first line of slots. */
+.skim .inv .row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; align-items: start; }
+.skim .inv .k { font: 9px/1.6 var(--px); color: var(--mu); text-transform: uppercase; padding-top: 14px; }
+.skim .inv .sl { display: flex; flex-wrap: wrap; gap: 8px; }
+.skim .inv .sl li { background: var(--card); border: 2px solid var(--hi); box-shadow: inset 0 -3px 0 var(--edge); padding: 8px 12px; font-size: 14px; font-weight: 600; border-radius: 3px; white-space: nowrap; transition: transform .12s steps(2), border-color .12s; }
+.skim .inv .sl li:hover { transform: translateY(-3px); border-color: var(--coral); }
+
+/* Contact */
+.skim .ct { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+.skim .ct h3 { font: italic 800 34px/1.2 var(--disp); }
+.skim .keys { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.skim .key { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; background: #2a2c33; color: var(--tx); text-decoration: none; font: 9px var(--px); padding: 12px 14px; border-radius: 5px; border: 1px solid #3a3d45; box-shadow: 0 4px 0 var(--dp); transition: transform .08s steps(1), box-shadow .08s steps(1), border-color .1s; }
+.skim .key i { font-style: normal; background: var(--coral); color: #1b1c21; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 8px; }
+.skim a.key:hover { border-color: var(--coral); }
+.skim a.key:active { transform: translateY(4px); box-shadow: 0 0 0 var(--dp); }
+.skim .key.dim { opacity: .5; cursor: not-allowed; }
+
+/* Typewriter text: an invisible copy reserves the final size so typing never shifts layout */
+.skim .tw { position: relative; display: inline-block; }
+.skim .tw-ghost { visibility: hidden; }
+.skim .tw-live { position: absolute; left: 0; top: 0; right: 0; }
+.skim .tw-cur { margin-left: 2px; animation: sk-blink .5s steps(1) infinite; }
+
+/* Ambient pixel motion */
+.skim .blk, .skim .lgt { animation: sk-blink 1s steps(1) infinite; }
+.skim .bob { animation: sk-bob 1.4s steps(1) infinite; }
+@keyframes sk-blink { 50% { opacity: 0; } }
+@keyframes sk-bob { 50% { transform: translateY(-4px); } }
+@keyframes sk-shine { to { left: 110%; } }
+
+/* Scroll reveals: only once SkimRoot has JS running (.fx), so content never hides without it.
+   fill-mode backwards (not both) so hover transforms still work after the reveal finishes. */
+.skim.fx [data-r]:not(.in) { opacity: 0; }
+.skim [data-r].in { animation-delay: var(--d, 0s); animation-fill-mode: backwards; }
+.skim [data-r="wipe"].in { animation-name: sk-wipe; animation-duration: .5s; animation-timing-function: steps(8); }
+.skim [data-r="up"].in { animation-name: sk-up; animation-duration: .45s; animation-timing-function: steps(5); }
+.skim [data-r="pop"].in { animation-name: sk-pop; animation-duration: .35s; animation-timing-function: steps(4); }
+@keyframes sk-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+@keyframes sk-up { from { transform: translateY(26px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes sk-pop { from { transform: scale(.5); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .skim *, .skim *::before, .skim *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 760px) {
+  .skim main { padding: 64px 16px 64px; } /* room for the docked Play | Skim switch */
+  .skim .hero, .skim .cart, .skim .ach, .skim .inv .row, .skim .ct, .skim .hero .dlg ul { grid-template-columns: 1fr; }
+  .skim .mini { max-width: 240px; }
+  .skim .bdg.w { grid-column: auto; }
+  .skim .inv .row { gap: 8px; }
+  .skim .inv .k { padding-top: 0; }
+  .skim .lab { margin: 30px 16px 0; }
+  .skim .det { padding: 20px 18px 22px; }
+  .skim .hero h1 { font-size: 30px; }
+  .skim .cart { clip-path: none; }
+}

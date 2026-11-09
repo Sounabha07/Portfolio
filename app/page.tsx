@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Hero } from "@/components/console/Hero";
-import { Sections } from "@/components/site/Sections";
+import { Skim } from "@/components/skim/Skim";
 import { Face, ViewProvider } from "@/components/view/ViewProvider";
 import { ViewSwitch } from "@/components/view/ViewSwitch";
 import { profile } from "@/content";
@@ -16,18 +16,19 @@ export default function Home() {
       <div className="view-dock">
         <ViewSwitch />
       </div>
-      <main>
-        <h1 className="sr-only">
-          {profile.name}, {profile.role}
-        </h1>
-        {/* Both faces are in the static HTML; the switch shows one at a time. */}
-        <Face name="play">
+      {/* Both faces are in the static HTML; the switch shows one at a time. Each has its own h1. */}
+      <Face name="play">
+        <main>
+          <h1 className="sr-only">
+            {profile.name}, {profile.role}
+          </h1>
           <Hero resume={hasResume} />
-        </Face>
-        <Face name="skim">
-          <Sections resume={hasResume} />
-        </Face>
-      </main>
+        </main>
+      </Face>
+      <Face name="skim">
+        {/* Skim renders its own <main> and visible h1 */}
+        <Skim resume={hasResume} />
+      </Face>
     </ViewProvider>
   );
 }
