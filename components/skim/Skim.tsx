@@ -1,6 +1,8 @@
-import { about, achievements, contact, profile, projects, skills, upNext, type SpriteKey } from "@/content";
+import { about, achievements, contact, profile, projects, skills, type SceneKey, type SpriteKey } from "@/content";
 import { Sprite } from "@/components/console/Sprite";
+import { Scene } from "@/components/console/screens/scenes";
 import { CountUp } from "./CountUp";
+import { PixelLogo, type LogoKey } from "./PixelLogo";
 import { SkimRoot } from "./SkimRoot";
 import { SkimStage } from "./SkimStage";
 import { TypeText } from "./TypeText";
@@ -10,7 +12,6 @@ import "./skim.css";
 const PAL = {
   ink: { "--s1": "#2a2622", "--s2": "#d9573e", "--s3": "#efe9df" },
   coral: { "--s1": "#e8644a", "--s2": "#f08a70", "--s3": "#2a2c33" },
-  dark: { "--s1": "#ece6dc", "--s2": "#464953", "--s3": "#2a2c33" },
 } as const;
 
 function Spr({ k, size, pal, bob }: { k: SpriteKey; size: number; pal: keyof typeof PAL; bob?: number }) {
@@ -53,17 +54,23 @@ function Counted({ text }: { text: string }) {
   );
 }
 
-const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+// Caption above each project's animated scene in its cartridge label.
+const SCENE_CAPTION: Record<SceneKey, string> = {
+  store: "FILE SPLIT ACROSS NODES",
+  pipeline: "BLOCKS RUNNING",
+  graph: "AGENT WALKING THE GRAPH",
+};
+
 const same = (a: string, b: string) => a.replace(/[.\s]+$/, "") === b.replace(/[.\s]+$/, "");
 
 export function Skim({ resume }: { resume: boolean }) {
-  const keys = [
-    { label: "Email", href: `mailto:${profile.email}`, title: profile.email },
-    { label: "GitHub", href: profile.github, title: profile.githubLabel },
-    { label: "LinkedIn", href: profile.linkedin, title: profile.linkedinLabel },
-    { label: "Codeforces", href: profile.codeforces, title: "Codeforces: Sounabha07" },
-    { label: "CodeChef", href: profile.codechef, title: "CodeChef: extra_sail_77" },
-    { label: "Resume", href: resume ? profile.resumePath : null, title: resume ? "Resume (PDF)" : "Resume coming soon" },
+  const keys: { label: string; logo: LogoKey; href: string | null; title: string }[] = [
+    { label: "Email", logo: "email", href: `mailto:${profile.email}`, title: profile.email },
+    { label: "GitHub", logo: "github", href: profile.github, title: profile.githubLabel },
+    { label: "LinkedIn", logo: "linkedin", href: profile.linkedin, title: profile.linkedinLabel },
+    { label: "Codeforces", logo: "codeforces", href: profile.codeforces, title: "Codeforces: Sounabha07" },
+    { label: "CodeChef", logo: "codechef", href: profile.codechef, title: "CodeChef: extra_sail_77" },
+    { label: "Resume", logo: "resume", href: resume ? profile.resumePath : null, title: resume ? "Resume (PDF)" : "Resume coming soon" },
   ];
 
   return (
@@ -116,6 +123,13 @@ export function Skim({ resume }: { resume: boolean }) {
                     <p>{p.short}</p>
                   </div>
                 </div>
+                <div className="lscn" aria-hidden="true">
+                  <div className="lcap">
+                    <span>{SCENE_CAPTION[p.scene]}</span>
+                    <span className="live blk">● LIVE</span>
+                  </div>
+                  <Scene k={p.scene} />
+                </div>
               </div>
               <div className="det">
                 <p className="hk">{p.hook}</p>
@@ -141,12 +155,6 @@ export function Skim({ resume }: { resume: boolean }) {
               </div>
             </article>
           ))}
-          <div className="slot" data-r="up">
-            <Spr k="chip" size={40} pal="dark" />
-            <div>
-              <span className="pill">{upNext.label}</span> &nbsp;<b>Empty slot.</b> {upNext.name}: {lowerFirst(upNext.description)}
-            </div>
-          </div>
         </section>
 
         <section aria-labelledby="sk-achievements">
@@ -220,13 +228,17 @@ export function Skim({ resume }: { resume: boolean }) {
             {keys.map((c, i) =>
               c.href ? (
                 <a key={c.label} className="key" href={c.href} title={c.title} data-r="pop" style={delay(i, 0.05)} {...ext(c.href)}>
-                  <i aria-hidden="true">{i === 0 ? "A" : "↗"}</i>
+                  <i aria-hidden="true">
+                    <PixelLogo k={c.logo} />
+                  </i>
                   {c.label.toUpperCase()}
                   {c.href.startsWith("http") && NEW_TAB}
                 </a>
               ) : (
                 <span key={c.label} className="key dim" title={c.title} aria-disabled="true" data-r="pop" style={delay(i, 0.05)}>
-                  <i aria-hidden="true">↗</i>
+                  <i aria-hidden="true">
+                    <PixelLogo k={c.logo} />
+                  </i>
                   {c.label.toUpperCase()}
                   <span className="sr-only"> (coming soon)</span>
                 </span>

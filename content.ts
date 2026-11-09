@@ -32,7 +32,7 @@ export const aboutDialog = [
 
 export const about = {
   intro:
-    "Third-year computer engineering student at K.J. Somaiya School of Engineering, Mumbai. Backend and distributed systems are my thing.",
+    "Third-year computer engineering student at K.J. Somaiya School of Engineering, Mumbai.",
   points: ["Backend and systems developer", "AI-powered app builder", "AI/ML enthusiast", "Competitive programmer"],
 };
 
@@ -110,11 +110,6 @@ export const projects: Project[] = [
   },
 ];
 
-export const upNext = {
-  label: "Planned",
-  name: "LLM inference server",
-  description: "A vLLM-style server with paged KV cache and continuous batching, built by hand.",
-};
 
 export type Achievement = {
   title: string;

@@ -44,7 +44,6 @@
 .skim .hero .dlg li { font-weight: 600; display: flex; gap: 10px; align-items: center; }
 .skim .hero .dlg li::before { content: ''; width: 8px; height: 8px; background: var(--ink2); flex: none; }
 
-.skim .pill { font: 8px var(--px); padding: 6px 8px; border-radius: 3px; background: var(--hi); color: var(--tx); flex: none; text-transform: uppercase; }
 
 /* Projects: cartridges */
 .skim .cart { display: grid; grid-template-columns: 330px 1fr; background: var(--body); border-radius: 10px 10px 18px 18px; clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%); box-shadow: inset 0 2px 0 var(--hi), inset 0 -4px 0 var(--edge); margin-bottom: 22px; position: relative; transition: transform .18s steps(3); }
@@ -52,11 +51,22 @@
 .skim .cart:hover { transform: translateY(-8px); }
 .skim .cart:hover .lab { box-shadow: 0 0 0 3px var(--coral); }
 .skim .cart:hover::before { background: repeating-linear-gradient(90deg, var(--coral) 0 3px, transparent 3px 9px); }
-/* The cream label stretches to the cartridge's full height (grid default), matching the details column. */
-.skim .lab { align-self: stretch; margin: 34px 0 22px 22px; background: var(--ink0); color: var(--ink1); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+/* The cream label stretches to the cartridge's full height (grid default); its scene panel is pinned to the bottom. */
+.skim .lab { margin: 34px 0 22px 22px; background: var(--ink0); color: var(--ink1); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
 .skim .lab .st { background: var(--ink1); color: var(--ink0); font: 8px var(--px); padding: 8px 12px; display: flex; justify-content: space-between; }
 .skim .lab .st b { color: var(--coral); font-weight: 400; } /* coral (not #d9573e) keeps the tiny text above AA on ink */
-.skim .lab .lbd { padding: 18px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; flex: 1; }
+.skim .lab .lbd { padding: 18px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+/* Animated project scene, reusing the console's scene components and keyframes */
+.skim .lscn {
+  margin-top: auto; padding: 16px;
+  --s0: #efe9df; --s1: #2a2622; --s2: #d9573e; --s3: #ddd4c6; /* console light palette for the scene */
+  --cap: #6b6358;   /* caption: the requested #8a8174 is ~3.1:1 on cream, below AA for tiny text */
+  --live: #b03f29;  /* LIVE: coral #e8644a is ~2.7:1 on cream, so a deeper coral that passes AA */
+}
+.skim .lscn .lcap { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 8px; font: 7px/1.4 var(--px); text-transform: uppercase; color: var(--cap); }
+.skim .lscn .live { color: var(--live); white-space: nowrap; }
+.skim .lscn .scn { display: block; width: 100%; height: auto; border: 2px solid #2a2622; box-sizing: border-box; }
+.skim .lscn .lgt { animation: gb-led 1s steps(1) infinite; } /* the console's rack-light blink, not the Skim opacity blink */
 .skim .lab h3 { font: italic 800 22px/1.1 var(--disp); margin-bottom: 8px; }
 .skim .lab p { font-size: 14px; line-height: 1.5; }
 .skim .det { padding: 34px 30px 24px 28px; color: var(--tx); }
@@ -68,8 +78,6 @@
 .skim .go { display: inline-flex; margin-top: 16px; font: 8px var(--px); background: var(--coral); color: #1b1c21; padding: 10px 12px; border-radius: 3px; text-decoration: none; box-shadow: 0 3px 0 #9c3f2c; transition: transform .08s steps(1); }
 .skim .go:active { transform: translateY(3px); box-shadow: none; }
 .skim .go.off { background: var(--hi); color: #d2cfc8; box-shadow: 0 3px 0 var(--edge); } /* lighter text than the reference for AA contrast */
-.skim .slot { border: 2px dashed var(--hi); border-radius: 10px; padding: 22px 26px; display: flex; gap: 18px; align-items: center; color: var(--mu); }
-.skim .slot b { color: var(--tx); }
 
 /* Achievements: badges */
 .skim .ach { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }

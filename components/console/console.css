@@ -103,15 +103,15 @@
 .sc .lgt:nth-of-type(3n+1) { animation-delay: .66s; }
 @keyframes gb-led { 50% { fill: var(--s3) } }
 
-/* Project scenes */
+/* Project scenes (also used in the Skim cartridge labels, .lscn) */
 .sc .scn { display: block; margin: 6px auto 4px; border: 2px solid var(--s1); }
-.sc .ch0 { animation: gb-l0 1.8s linear infinite; }
-.sc .ch1 { animation: gb-l1 1.8s .45s linear infinite; }
-.sc .ch2 { animation: gb-l2 1.8s .9s linear infinite; }
+:is(.sc, .lscn) .ch0 { animation: gb-l0 1.8s linear infinite; }
+:is(.sc, .lscn) .ch1 { animation: gb-l1 1.8s .45s linear infinite; }
+:is(.sc, .lscn) .ch2 { animation: gb-l2 1.8s .9s linear infinite; }
 @keyframes gb-l0 { 0% { transform: translate(0,0); opacity: 0 } 10%, 85% { opacity: 1 } 100% { transform: translate(176px,-24px); opacity: 0 } }
 @keyframes gb-l1 { 0% { transform: translate(0,0); opacity: 0 } 10%, 85% { opacity: 1 } 100% { transform: translate(176px,-2px); opacity: 0 } }
 @keyframes gb-l2 { 0% { transform: translate(0,0); opacity: 0 } 10%, 85% { opacity: 1 } 100% { transform: translate(176px,20px); opacity: 0 } }
-.sc .np { animation: gb-np 2.4s steps(1) infinite; }
+:is(.sc, .lscn) .np { animation: gb-np 2.4s steps(1) infinite; }
 @keyframes gb-np { 0%, 25% { fill: var(--s2) } 26%, 100% { fill: var(--s0) } }
 
 /* Achievements */
