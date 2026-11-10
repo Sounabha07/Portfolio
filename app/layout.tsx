@@ -14,7 +14,8 @@ const arimo = Arimo({ weight: "700", style: "italic", subsets: ["latin"], variab
 const syne = Syne({ weight: "800", subsets: ["latin"], variable: "--font-syne", display: "swap", preload: false });
 const instrument = Instrument_Sans({ weight: ["400", "500", "600", "700"], subsets: ["latin"], variable: "--font-instrument", display: "swap" });
 
-const title = `${profile.name} | ${profile.role}`;
+// The browser tab shows just the name; link previews (LinkedIn, X) also show the role.
+const shareTitle = `${profile.name} | ${profile.role}`;
 
 // metadataBase is the origin only: Next already prefixes the image files with the base path,
 // so including /Portfolio here as well would double it. The page URL is spelled out in full.
@@ -22,7 +23,7 @@ const pageUrl = `${siteUrl}/`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(new URL(siteUrl).origin),
-  title,
+  title: profile.name,
   description: profile.oneLiner,
   applicationName: `${profile.name} portfolio`,
   authors: [{ name: profile.name, url: profile.github }],
@@ -31,13 +32,13 @@ export const metadata: Metadata = {
     type: "website",
     url: pageUrl,
     siteName: profile.name,
-    title,
+    title: shareTitle,
     description: profile.oneLiner,
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title,
+    title: shareTitle,
     description: profile.oneLiner,
   },
 };
