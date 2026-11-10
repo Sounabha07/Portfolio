@@ -16,7 +16,7 @@
   transition: background .5s, border-color .5s;
 }
 .gb .groove { position: absolute; top: 9px; left: 20px; right: 20px; height: 2px; border-radius: 1px; background: var(--edge); opacity: .7; }
-.gb .bz { background: var(--bez); border-radius: 10px 10px 40px 10px; padding: 10px 14px 22px; transition: background .5s; }
+.gb .bz { background: var(--bez); border-radius: 10px; padding: 10px 11px 22px; /* 11px sides: exactly fits the 320px screen, so the black is even on both sides */ transition: background .5s; }
 .gb .bt { display: flex; align-items: center; gap: 8px; font: 500 11px var(--font-instrument), sans-serif; color: var(--bezt); letter-spacing: .1em; margin: 0 0 8px 2px; }
 .gb .bt .ln { flex: 1; height: 2px; background: var(--ab); opacity: .6; border-radius: 1px; }
 .gb .led { width: 8px; height: 8px; border-radius: 50%; background: #3a2b33; transition: background .4s, box-shadow .4s; }
@@ -113,6 +113,15 @@
 @keyframes gb-l2 { 0% { transform: translate(0,0); opacity: 0 } 10%, 85% { opacity: 1 } 100% { transform: translate(176px,20px); opacity: 0 } }
 :is(.sc, .lscn) .np { animation: gb-np 2.4s steps(1) infinite; }
 @keyframes gb-np { 0%, 25% { fill: var(--s2) } 26%, 100% { fill: var(--s0) } }
+
+/* Project page dots + "How it works" pages */
+.sc .dots { display: inline-flex; gap: 3px; align-items: center; }
+.sc .dots i { width: 7px; height: 7px; border: 1px solid var(--s1); }
+.sc .dots i.on { background: var(--s2); border-color: var(--s2); }
+.sc .how { position: relative; padding-top: 10px; }
+.sc .how-lbl { color: var(--s2); font-size: 8px; }
+.sc .how-n { font-size: 22px; line-height: 1.2; margin: 2px 0 8px; }
+.sc .how-spr { position: absolute; right: 10px; top: 10px; }
 
 /* Achievements */
 .sc .cf { position: absolute; top: -10px; width: 5px; height: 5px; animation: gb-fall linear infinite; z-index: 0; }

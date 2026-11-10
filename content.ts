@@ -54,6 +54,7 @@ export type Project = {
   points: string[];
   tech: string[];
   consoleTech: string; // short tech line that fits the console screen
+  consoleDetails: string[]; // console "How it works" pages, one short line each (~90 chars max)
 };
 
 export const projects: Project[] = [
@@ -75,6 +76,12 @@ export const projects: Project[] = [
     ],
     tech: ["Go", "Raft", "BoltDB", "Reed-Solomon", "Docker", "Prometheus"],
     consoleTech: "Go, Raft",
+    consoleDetails: [
+      "Metadata is copied across 3 Raft nodes. Kill the leader and no saved write is lost.",
+      "Files are cut into 4 MiB chunks and erasure coded 4+2 over 6 nodes. Any 2 can die.",
+      "Every shard is checksummed. Repair rebuilds broken ones by itself.",
+      "Chaos test: nodes killed, network cut, files corrupted. 5,980 writes, 0 lost.",
+    ],
   },
   {
     name: "AI Workflow Automation Tool",
@@ -95,6 +102,12 @@ export const projects: Project[] = [
     ],
     tech: ["Python", "FastAPI", "Celery", "Redis", "PostgreSQL", "React", "TypeScript", "React Flow", "Docker"],
     consoleTech: "Python, Celery, Redis",
+    consoleDetails: [
+      "Each block runs as its own Celery task. It starts the moment its inputs are ready.",
+      "Retries with backoff, row locks so nothing runs twice, and a sweeper for crashed runs.",
+      "HTTP, Gemini LLM, branching and wait-for-input blocks. Run by hand, on a timer or by webhook.",
+      "Live status on the canvas over WebSockets. About 120 tests and CI.",
+    ],
   },
   {
     name: "Codebase Intelligence Platform",
@@ -111,6 +124,10 @@ export const projects: Project[] = [
     ],
     tech: ["Python", "LangGraph"],
     consoleTech: "Python, LangGraph",
+    consoleDetails: [
+      "Turns a repo into a graph of files, functions, imports and calls.",
+      "LangGraph agents walk that graph and read only the code that matters.",
+    ],
   },
 ];
 

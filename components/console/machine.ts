@@ -16,6 +16,9 @@ export const MENU: { label: string; sprite: SpriteKey; to: Scr }[] = [
   { label: "Contact", sprite: "mail", to: "contact" },
 ];
 
+/** Pages for a project on the console: the overview plus one per "How it works" detail. */
+export const projectPages = (p: number) => 1 + projects[p].consoleDetails.length;
+
 export type ContactItem = { label: string; detail: string; href: string | null };
 
 export function contactItems(resume: boolean): ContactItem[] {
@@ -29,12 +32,13 @@ export function contactItems(resume: boolean): ContactItem[] {
   ];
 }
 
-type Patch = Partial<Pick<State, "scr" | "p" | "pg" | "ch">>;
+type Patch = Partial<Pick<State, "scr" | "p" | "d" | "pg" | "ch">>;
 
 export type State = {
   scr: Scr;
   m: number; // menu cursor
   p: number; // project cursor
+  d: number; // page within a project: 0 = overview, 1.. = "How it works" pages
   pg: number; // about dialog page
   ch: number; // typed characters on the current about page
   c: number; // contact cursor
@@ -62,7 +66,7 @@ export type Action =
 
 export function initState(resume: boolean): State {
   return {
-    scr: "boot", m: 0, p: 0, pg: 0, ch: 0, c: 0,
+    scr: "boot", m: 0, p: 0, d: 0, pg: 0, ch: 0, c: 0,
     dark: false, ready: false, busy: false, led: false, rm: false,
     wipe: 0, pending: null, fx: [], fxSeq: 0, toast: null, resume,
   };
@@ -169,14 +173,22 @@ function press(prev: State, k: Key): State {
       beep(700, 0.03);
     } else if (k === "a") {
       beep(990, 0.06);
-      go("project");
+      go("project", { d: 0 });
     }
     return done();
   }
   if (scr === "project") {
     if (k === "left" || k === "right") {
       beep(700, 0.03);
-      go("project", { p: wrap(s.p, k === "left" ? -1 : 1, projects.length) });
+      go("project", { p: wrap(s.p, k === "left" ? -1 : 1, projects.length), d: 0 });
+    } else if (k === "up" || k === "down") {
+      // Page through overview + "How it works" pages; low beep at either end.
+      const next = s.d + (k === "down" ? 1 : -1);
+      if (next < 0 || next >= projectPages(s.p)) beep(220, 0.07);
+      else {
+        s.d = next;
+        beep(760, 0.03);
+      }
     } else if (k === "a") {
       const pr = projects[s.p];
       if (pr.public) {

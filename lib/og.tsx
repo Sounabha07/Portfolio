@@ -41,7 +41,7 @@ export function OgConsole({ s }: { s: number }) {
     >
       <div style={{ position: "absolute", top: n(9), left: n(20), right: n(20), height: n(2), background: C.edge, opacity: 0.7, display: "flex" }} />
       {/* Bezel */}
-      <div style={{ display: "flex", flexDirection: "column", background: C.bez, borderRadius: `${n(10)}px ${n(10)}px ${n(40)}px ${n(10)}px`, padding: `${n(10)}px ${n(14)}px ${n(22)}px` }}>
+      <div style={{ display: "flex", flexDirection: "column", background: C.bez, borderRadius: n(10), padding: `${n(10)}px ${n(11)}px ${n(22)}px` }}>
         <div style={{ display: "flex", alignItems: "center", marginBottom: n(8), marginLeft: n(2) }}>
           <div style={{ width: n(8), height: n(8), borderRadius: n(4), background: "#ff6a4d", boxShadow: `0 0 ${n(6)}px #ff6a4d`, display: "flex" }} />
           <div style={{ fontFamily: "Sans", fontSize: n(11), color: C.bezt, letterSpacing: n(1.1), marginLeft: n(8), marginRight: n(8) }}>PORTFOLIO SYSTEM</div>

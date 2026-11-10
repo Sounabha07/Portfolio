@@ -30,7 +30,7 @@ function View({ state: s, dispatch, scrollRef }: Props) {
     case "projects":
       return <Projects p={s.p} />;
     case "project":
-      return <ProjectDetail p={s.p} />;
+      return <ProjectDetail p={s.p} d={s.d} />;
     case "cp":
       return <Achievements scrollRef={scrollRef} />;
     case "contact":
@@ -43,7 +43,7 @@ export function Screen(props: Props) {
   const pal = s.dark ? PALETTE.dark : PALETTE.light;
   const vars = Object.fromEntries(pal.map((v, i) => [`--s${i}`, v])) as React.CSSProperties;
   // Remount per screen (and per project) so entry animations replay, like the reference.
-  const viewKey = s.scr === "project" ? `project-${s.p}` : s.scr;
+  const viewKey = s.scr === "project" ? `project-${s.p}-${s.d}` : s.scr;
 
   return (
     <div className="sc" style={vars} aria-hidden="true">

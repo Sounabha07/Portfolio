@@ -1,5 +1,5 @@
 import { achievements, aboutDialog, profile, projects } from "@/content";
-import { contactItems, MENU, type State } from "./machine";
+import { contactItems, MENU, projectPages, type State } from "./machine";
 
 /** Plain-text version of the current screen, mirrored into an aria-live region for screen readers. */
 export function describe(s: State): string {
@@ -20,8 +20,14 @@ export function describe(s: State): string {
     }
     case "project": {
       const pr = projects[s.p];
+      const pages = projectPages(s.p);
       const code = pr.public ? "A opens the code on GitHub." : "Code coming soon.";
-      return `${pr.name}, ${pr.status}. ${pr.short} Built with ${pr.consoleTech}. ${code} Left and right switch projects, B goes back.${toast}`;
+      if (s.d === 0) {
+        const more = pages > 1 ? " Down for how it works." : "";
+        return `${pr.name}, ${pr.status}, page 1 of ${pages}. ${pr.short} Built with ${pr.consoleTech}.${more} ${code} Left and right switch projects, B goes back.${toast}`;
+      }
+      const nav = s.d === pages - 1 ? "Up to go back." : "Down for next, up to go back.";
+      return `${pr.name}, how it works ${s.d} of ${pages - 1}, page ${s.d + 1} of ${pages}. ${pr.consoleDetails[s.d - 1]} ${nav} ${code}${toast}`;
     }
     case "cp":
       return `Achievements. ${achievements.map((a) => `${a.consoleTitle}: ${a.consoleSub}.`).join(" ")} B to go back.${toast}`;
