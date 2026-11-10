@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useReducer, useRef } from "react";
 import { profile } from "@/content";
 import { describe } from "./describe";
 import { initState, reducer, type Fx, type Key } from "./machine";
@@ -34,15 +34,12 @@ type Props = {
 
 export function Console({ resume, onPress }: Props) {
   const [state, dispatch] = useReducer(reducer, resume, initState);
-  const [active, setActive] = useState(false);
   const skim = useView().view === "skim";
   const skimRef = useRef(false);
   const fitRef = useRef<HTMLDivElement>(null);
   const gbRef = useRef<HTMLDivElement>(null);
-  const barRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastFx = useRef(0);
-  const activeRef = useRef(false);
   const onPressRef = useRef(onPress);
   useEffect(() => {
     onPressRef.current = onPress;
@@ -60,59 +57,26 @@ export function Console({ resume, onPress }: Props) {
     setTimeout(() => b.classList.remove("pr"), 120);
   }, []);
 
-  // ---- Keyboard capture: only while the console is active ----
-  const activate = useCallback(() => {
-    if (skimRef.current) return; // the console is hidden in Skim
-    activeRef.current = true;
-    setActive(true);
-  }, []);
-  const release = useCallback(() => {
-    activeRef.current = false;
-    setActive(false);
-  }, []);
-
+  // ---- Keyboard: the console takes the keys whenever the Play face is showing ----
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (!activeRef.current) return;
-      if (e.key === "Escape") {
-        release();
-        const f = document.activeElement;
-        if (f instanceof HTMLElement && gbRef.current?.contains(f)) f.blur();
-        return;
-      }
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (skimRef.current) return; // the console is hidden in Skim
+      if (e.ctrlKey || e.metaKey || e.altKey) return; // keep browser shortcuts working
+      const t = e.target instanceof HTMLElement ? e.target : null;
+      if (t?.closest("input, textarea, select, [contenteditable='true']")) return;
       // Space on a focused console button presses that button (keyboard users tabbing through).
-      const focused = e.target instanceof HTMLElement ? e.target.closest<HTMLElement>(".gb button[data-k]") : null;
-      const k = e.key === " " && focused ? (focused.dataset.k as Key) : KEYMAP[e.key.toLowerCase()];
+      const consoleBtn = t?.closest<HTMLElement>(".gb button[data-k]");
+      // A focused control outside the console (e.g. the Play | Skim switch) keeps Enter and Space.
+      if (!consoleBtn && t?.closest("button, a[href]") && (e.key === "Enter" || e.key === " ")) return;
+      const k = e.key === " " && consoleBtn ? (consoleBtn.dataset.k as Key) : KEYMAP[e.key.toLowerCase()];
       if (!k) return;
       e.preventDefault();
       flashButton(k);
       press(k);
     };
-    // Clicking or tapping anywhere outside the console (and its sound/status bar) releases it.
-    const onPointer = (e: PointerEvent) => {
-      if (!activeRef.current || !(e.target instanceof Node)) return;
-      if (gbRef.current?.contains(e.target) || barRef.current?.contains(e.target)) return;
-      release();
-    };
     document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onPointer);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onPointer);
-    };
-  }, [press, flashButton, release]);
-
-  // Scrolling the console fully out of view releases it.
-  useEffect(() => {
-    const gb = gbRef.current;
-    if (!gb) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) release();
-    });
-    io.observe(gb);
-    return () => io.disconnect();
-  }, [release]);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [press, flashButton]);
 
   // ---- Responsive: give the scale wrapper the console's real (untransformed) height ----
   useLayoutEffect(() => {
@@ -128,9 +92,8 @@ export function Console({ resume, onPress }: Props) {
   // Sound is always on in Play. Skim face: no keyboard capture and no sound.
   useEffect(() => {
     skimRef.current = skim;
-    if (skim) release();
     setSoundMuted(skim);
-  }, [skim, release]);
+  }, [skim]);
 
   // Reduced motion + boot timer.
   useEffect(() => {
@@ -199,19 +162,7 @@ export function Console({ resume, onPress }: Props) {
   return (
     <>
       <div className="gb-fit" ref={fitRef}>
-        <div
-          className={active ? "gb active" : "gb"}
-          ref={gbRef}
-          role="group"
-          aria-label="Portfolio game console. Use the buttons, or the keyboard while it is active. Escape exits."
-          onPointerDown={activate}
-          onFocus={activate}
-          onBlur={(e) => {
-            // Tabbing out of the console releases it.
-            const next = e.relatedTarget;
-            if (next instanceof Node && !gbRef.current?.contains(next)) release();
-          }}
-        >
+        <div className="gb" ref={gbRef} role="group" aria-label="Portfolio game console. Use the buttons or the keyboard.">
           <span className="groove" />
           <div className="bz">
             <div className="bt">
@@ -263,12 +214,6 @@ export function Console({ resume, onPress }: Props) {
             <i />
           </div>
         </div>
-      </div>
-
-      <div className="gb-bar" ref={barRef}>
-        <span className="playing" role="status" style={{ visibility: active ? "visible" : "hidden" }}>
-          Playing, Esc to exit
-        </span>
       </div>
 
       <p className="sr-only" aria-live="polite">
