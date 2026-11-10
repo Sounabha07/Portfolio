@@ -132,8 +132,10 @@
 .skim.fx [data-r]:not(.in) { opacity: 0; }
 .skim [data-r].in { animation-delay: var(--d, 0s); animation-fill-mode: backwards; }
 .skim [data-r="wipe"].in { animation-name: sk-wipe; animation-duration: .5s; animation-timing-function: steps(8); }
-.skim [data-r="up"].in { animation-name: sk-up; animation-duration: .45s; animation-timing-function: steps(5); }
-.skim [data-r="pop"].in { animation-name: sk-pop; animation-duration: .35s; animation-timing-function: steps(4); }
+/* Blocks glide in smoothly (ease-out); with steps() a full screen of cards rising at ~11fps read as lag.
+   The heading wipe, blinks, bobbing sprites, typing and shines stay stepped for the pixel feel. */
+.skim [data-r="up"].in { animation-name: sk-up; animation-duration: .5s; animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+.skim [data-r="pop"].in { animation-name: sk-pop; animation-duration: .4s; animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
 @keyframes sk-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
 @keyframes sk-up { from { transform: translateY(26px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes sk-pop { from { transform: scale(.5); opacity: 0; } to { transform: none; opacity: 1; } }

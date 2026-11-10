@@ -9,7 +9,7 @@ const OPTIONS: { v: View; label: string; title: string }[] = [
 
 /** Hardware-style slide switch. Thumb position comes from html[data-view] in CSS, so it's right before hydration. */
 export function ViewSwitch() {
-  const { view, setView } = useView();
+  const { view, setView, prewarm } = useView();
   return (
     <div role="group" aria-label="Page view" className="vswitch">
       <span className="vswitch-thumb" aria-hidden="true" />
@@ -20,6 +20,7 @@ export function ViewSwitch() {
           data-v={o.v}
           title={o.title}
           aria-pressed={view === null ? undefined : view === o.v}
+          onPointerDown={() => prewarm(o.v)} // a head start on touch, before the click lands
           onClick={() => setView(o.v)}
         >
           {o.label}

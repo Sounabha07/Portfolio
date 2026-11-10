@@ -128,8 +128,10 @@ export const projects: Project[] = [
     tech: ["TypeScript", "Python", "LangGraph", "Neo4j", "PostgreSQL (pgvector)", "Redis", "tree-sitter", "Gemini API"],
     consoleTech: "TS, Python, Neo4j",
     consoleDetails: [
-      "Turns a repo into a graph of files, functions, imports and calls.",
-      "LangGraph agents walk that graph and read only the code that matters.",
+      "Indexes a repo into a Neo4j code graph. SCIP resolves calls in TS, Python and Go.",
+      "A LangGraph pipeline on Gemini answers with citations, then drops any claim the code can't back.",
+      "Keyword and pgvector search, fused and reranked, then expanded along the call graph.",
+      "Traces call flows from an entry point and shows what a diff will affect.",
     ],
   },
 ];
