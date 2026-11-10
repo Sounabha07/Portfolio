@@ -37,7 +37,6 @@ export const about = {
 };
 
 export const now = [
-  "Wrapping up a distributed, S3-compatible object store in Go.",
   "Preparing for the ICPC Asia regionals at Kanpur and Amritapuri with my team, O(1)hope.",
   "Next: a vLLM-style LLM inference server, with paged KV cache and continuous batching, built by hand.",
 ];
@@ -65,12 +64,17 @@ export const projects: Project[] = [
     sprite: "rack",
     scene: "store",
     repo: "https://github.com/Sounabha07/S3-Object-Store",
-    public: false,
+    public: true,
     short: "I wanted to know how S3 never loses your files, so I built my own in Go.",
-    hook: "A distributed, S3-compatible object store written in Go.",
-    points: [], // [I'll paste the final feature list and benchmark numbers. Until then, show only the hook.]
-    tech: ["Go", "[more to come]"],
-    consoleTech: "Go",
+    hook: "A distributed object store in Go that speaks the S3 API, so the regular aws CLI and SDKs just work with it, including multipart uploads and SigV4 auth.",
+    points: [
+      "Metadata lives in a 3-node Raft cluster, so a write is never lost when the leader dies, and every read sees the latest saved write.",
+      "Big objects are split into 4 MiB chunks and erasure coded (Reed-Solomon 4+2) across 6 storage nodes. Any 2 nodes can die, and it uses half the disk of 3x replication.",
+      "Every shard is checksummed and verified on read. Background repair rebuilds missing or corrupt shards, and garbage collection cleans up what's left.",
+      "I chaos-tested it by killing nodes, cutting the network and corrupting files under load: 5,980 saved writes, 0 lost. Reads hit 408 MB/s on my laptop.",
+    ],
+    tech: ["Go", "Raft", "BoltDB", "Reed-Solomon", "Docker", "Prometheus"],
+    consoleTech: "Go, Raft",
   },
   {
     name: "AI Workflow Automation Tool",
