@@ -9,7 +9,7 @@ export const profile = {
   shortName: "Sounabha",
   education:
     "B.Tech in Computer Engineering, K.J. Somaiya School of Engineering, Vidyavihar, Mumbai, class of 2028",
-  role: "Backend and distributed systems engineer",
+  role: "Backend and systems developer",
   oneLiner: "Backend and systems developer, AI/ML enthusiast, competitive programmer.",
   email: "sounabha07@gmail.com",
   github: "https://github.com/Sounabha07",
