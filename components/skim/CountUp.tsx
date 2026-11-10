@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { prefersReducedMotion } from "./SkimRoot";
+import { observeReplay, prefersReducedMotion } from "./SkimRoot";
 
 const fmt = (v: number, n: number) => (n >= 1000 ? v.toLocaleString("en-IN") : String(v));
 
 /**
- * Counts from 0 up to `n` (ease-out, 900ms) shortly after it scrolls into view.
- * Like TypeText, an invisible copy of the final text reserves the width so nothing reflows.
+ * Counts from 0 up to `n` (ease-out, 900ms) shortly after it scrolls into view going down,
+ * and again each time you scroll back down to it. An invisible copy of the final text
+ * reserves the width so nothing reflows. No-JS and reduced motion show the final text.
  */
 export function CountUp({ n, text }: { n: number; text: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -18,9 +19,14 @@ export function CountUp({ n, text }: { n: number; text: string }) {
     if (!el || !live || prefersReducedMotion()) return;
     let raf = 0;
     let timer = 0;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
+    const stop = () => {
+      window.clearTimeout(timer);
+      cancelAnimationFrame(raf);
+    };
+    live.textContent = fmt(0, n); // start from zero rather than flashing the final number first
+
+    const count = () => {
+      stop();
       timer = window.setTimeout(() => {
         const start = performance.now();
         const step = (t: number) => {
@@ -30,12 +36,16 @@ export function CountUp({ n, text }: { n: number; text: string }) {
         };
         raf = requestAnimationFrame(step);
       }, 300);
-    });
-    io.observe(el);
+    };
+    const reset = () => {
+      stop();
+      live.textContent = fmt(0, n);
+    };
+    const unobserve = observeReplay(el, count, reset);
+
     return () => {
-      io.disconnect();
-      window.clearTimeout(timer);
-      cancelAnimationFrame(raf);
+      unobserve();
+      stop();
       live.textContent = text;
     };
   }, [n, text]);
