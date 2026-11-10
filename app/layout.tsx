@@ -16,16 +16,20 @@ const instrument = Instrument_Sans({ weight: ["400", "500", "600", "700"], subse
 
 const title = `${profile.name} | ${profile.role}`;
 
+// metadataBase is the origin only: Next already prefixes the image files with the base path,
+// so including /Portfolio here as well would double it. The page URL is spelled out in full.
+const pageUrl = `${siteUrl}/`;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(new URL(siteUrl).origin),
   title,
   description: profile.oneLiner,
   applicationName: `${profile.name} portfolio`,
   authors: [{ name: profile.name, url: profile.github }],
-  alternates: { canonical: "/" },
+  alternates: { canonical: pageUrl },
   openGraph: {
     type: "website",
-    url: "/",
+    url: pageUrl,
     siteName: profile.name,
     title,
     description: profile.oneLiner,

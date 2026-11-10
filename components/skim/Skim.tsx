@@ -1,6 +1,7 @@
 import { about, achievements, contact, profile, projects, skills, type SceneKey, type SpriteKey } from "@/content";
 import { Sprite } from "@/components/console/Sprite";
 import { Scene } from "@/components/console/screens/scenes";
+import { withBase } from "@/lib/site";
 import { CountUp } from "./CountUp";
 import { PixelLogo, type LogoKey } from "./PixelLogo";
 import { SkimRoot } from "./SkimRoot";
@@ -70,7 +71,7 @@ export function Skim({ resume }: { resume: boolean }) {
     { label: "LinkedIn", logo: "linkedin", href: profile.linkedin, title: profile.linkedinLabel },
     { label: "Codeforces", logo: "codeforces", href: profile.codeforces, title: "Codeforces: Sounabha07" },
     { label: "CodeChef", logo: "codechef", href: profile.codechef, title: "CodeChef: extra_sail_77" },
-    { label: "Resume", logo: "resume", href: resume ? profile.resumePath : null, title: resume ? "Resume (PDF)" : "Resume coming soon" },
+    { label: "Resume", logo: "resume", href: resume ? withBase(profile.resumePath) : null, title: resume ? "Resume (PDF)" : "Resume coming soon" },
   ];
 
   return (

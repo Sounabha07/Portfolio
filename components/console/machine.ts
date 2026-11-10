@@ -1,4 +1,5 @@
 import { aboutDialog, profile, projects, type SpriteKey } from "@/content";
+import { withBase } from "@/lib/site";
 
 export type Scr = "boot" | "menu" | "about" | "projects" | "project" | "cp" | "contact";
 export type Key = "up" | "down" | "left" | "right" | "a" | "b" | "start" | "select";
@@ -27,7 +28,7 @@ export function contactItems(resume: boolean): ContactItem[] {
     { label: "GitHub", detail: profile.githubLabel, href: profile.github },
     { label: "LinkedIn", detail: profile.linkedinLabel, href: profile.linkedin },
     resume
-      ? { label: "Resume", detail: "resume.pdf", href: profile.resumePath }
+      ? { label: "Resume", detail: "resume.pdf", href: withBase(profile.resumePath) }
       : { label: "Resume", detail: "coming soon", href: null },
   ];
 }
