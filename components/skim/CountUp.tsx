@@ -3,7 +3,9 @@
 import { useEffect, useRef } from "react";
 import { observeReplay, prefersReducedMotion } from "./SkimRoot";
 
-const fmt = (v: number, n: number) => (n >= 1000 ? v.toLocaleString("en-IN") : String(v));
+// Count in the same digit grouping the text uses: "1,00,000" (Indian) or "100,000" (international).
+const fmt = (v: number, n: number, text: string) =>
+  n >= 1000 ? v.toLocaleString(/\d,\d\d,\d{3}/.test(text) ? "en-IN" : "en-US") : String(v);
 
 /**
  * Counts from 0 up to `n` (ease-out, 900ms) shortly after it scrolls into view going down,
@@ -23,7 +25,7 @@ export function CountUp({ n, text }: { n: number; text: string }) {
       window.clearTimeout(timer);
       cancelAnimationFrame(raf);
     };
-    live.textContent = fmt(0, n); // start from zero rather than flashing the final number first
+    live.textContent = fmt(0, n, text); // start from zero rather than flashing the final number first
 
     const count = () => {
       stop();
@@ -31,7 +33,7 @@ export function CountUp({ n, text }: { n: number; text: string }) {
         const start = performance.now();
         const step = (t: number) => {
           const k = Math.min(1, (t - start) / 900);
-          live.textContent = k < 1 ? fmt(Math.round(n * (1 - Math.pow(1 - k, 3))), n) : text;
+          live.textContent = k < 1 ? fmt(Math.round(n * (1 - Math.pow(1 - k, 3))), n, text) : text;
           if (k < 1) raf = requestAnimationFrame(step);
         };
         raf = requestAnimationFrame(step);
@@ -39,7 +41,7 @@ export function CountUp({ n, text }: { n: number; text: string }) {
     };
     const reset = () => {
       stop();
-      live.textContent = fmt(0, n);
+      live.textContent = fmt(0, n, text);
     };
     const unobserve = observeReplay(el, count, reset);
 
